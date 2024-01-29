@@ -1,20 +1,11 @@
-import logo from './logo.svg';
+
 import './App.css';
 import { MapContainer, TileLayer, Marker, Popup, LayersControl, Polygon } from 'react-leaflet';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import "leaflet/dist/leaflet.css";
 import { Icon } from "leaflet";
-import L from 'leaflet'; // Import Leaflet
-function flattenCoordinates(coordinates) {
-  // Flatten the nested arrays of coordinates
-  return coordinates.flat(Infinity).map(coordinate => [coordinate[1], coordinate[0]]);
-}
-function formatPolygonCoordinates(polygon) {
-  if (!Array.isArray(polygon) || !polygon.length) return []; // Return empty array if polygon is not valid
+import MarkerClusterGroup from "react-leaflet-cluster"
 
-  // Flatten the nested arrays of coordinates and reverse the order (longitude, latitude)
-  return polygon.flat(Infinity).map(coordinate => [coordinate[1], coordinate[0]]);
-}
 function App() {
   const [polygons, setPolygons] = useState([]);
   useEffect(() => {
@@ -38,8 +29,6 @@ function App() {
     {
       id: 1,
       position: [16.085, 108.250],
-      title: 'South China Sea Location 1',
-      description: 'Description for South China Sea Location 1',
       shipNum: 'Qng 834934VN',
       shipName: 'Hard Waves',
       power: '220CV',
@@ -50,8 +39,6 @@ function App() {
     {
       id: 2,
       position: [16.050, 108.270],
-      title: 'South China Sea Location 2',
-      description: 'Description for South China Sea Location 2',
       shipNum: 'Qng 834934VN',
       shipName: 'Navy Star',
       shipLength: 15,
@@ -94,11 +81,47 @@ function App() {
   const handleDeleteMarker = (id) => {
     setMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== id));
   };
+
+  const calculateDistance = (coord1, coord2) => {
+    const [lat1, lon1] = coord1;
+    const [lat2, lon2] = coord2;
+
+    const R = 6371e3; // metres
+    const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
+    const φ2 = lat2 * Math.PI / 180;
+    const Δφ = (lat2 - lat1) * Math.PI / 180;
+    const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) *
+      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    const distance = R * c; // in metres
+    return distance;
+  };
+
+  const handleNearbyShips = (currentMarker) => {
+    const nearbyMarkers = markers.filter(marker => {
+      // Exclude the current marker by checking if it has the same id
+      if (marker.id === currentMarker.id) {
+        return false; // Skip this marker
+      }
+      const [lat1, lon1] = currentMarker.position;
+      const [lat2, lon2] = marker.position;
+      const distance = calculateDistance([lat1, lon1], [lat2, lon2]);
+      return distance <= 100000; // 100km in meters
+    });
+    console.log('Nearby markers:', nearbyMarkers);
+    // Implement your logic to display nearby markers
+  };
+
+
   return (
 
     <div className='mapContainer'>
       <div className="leafletMap">
-        <MapContainer center={[16.0544, 108.2022]} zoom={10}>
+        <MapContainer center={[16.0544, 108.2022]} zoom={10} >
           <LayersControl position="bottomright" className="layerchoose">
             <LayersControl.BaseLayer name="OpenStreetMap">
               <TileLayer
@@ -147,6 +170,7 @@ function App() {
           ))}
           {/* <Polygon positions={polygon} pathOptions={{ fillColor: 'transparent' }} /> */}
 
+          {/* <MarkerClusterGroup> */}
           {markers.map(marker => (
             <Marker key={marker.id} position={marker.position} icon={customIcon}>
               <Popup>
@@ -177,14 +201,17 @@ function App() {
                 </div>
 
                 <div className='ButtonPart'>
-                  <button className='popupButton nearby'>NearBy Ships</button>
+                  <button className='popupButton nearby' onClick={() => handleNearbyShips(marker)}>NearBy Ships</button>
                   <button className='popupButton update'>Update</button>
                   <button className='popupButton delete' onClick={() => handleDeleteMarker(marker.id)}>Delete</button>
                 </div>
               </Popup>
 
             </Marker>
-          ))}
+          )
+          )
+          }
+          {/* </MarkerClusterGroup> */}
         </MapContainer>
       </div>
       <FormAddBoat />
