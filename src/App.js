@@ -1,11 +1,11 @@
 
 import './App.css';
 import { MapContainer, TileLayer, Marker, Popup, LayersControl, Polygon } from 'react-leaflet';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import "leaflet/dist/leaflet.css";
 import { Icon } from "leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster"
-
+import { AutoComplete, Input } from 'antd';
 function App() {
   const [polygons, setPolygons] = useState([]);
   useEffect(() => {
@@ -29,8 +29,8 @@ function App() {
     {
       id: 1,
       position: [16.085, 108.250],
-      shipNum: 'Qng 834934VN',
-      shipName: 'Hard Waves',
+      shipNum: 'Dng 834934VN',
+      shipName: 'Already One',
       power: '220CV',
       shipLength: 15,
       ownerPhone: '0952393934',
@@ -40,7 +40,47 @@ function App() {
       id: 2,
       position: [16.050, 108.270],
       shipNum: 'Qng 834934VN',
-      shipName: 'Navy Star',
+      shipName: 'Already Two',
+      shipLength: 15,
+      power: '320CV',
+      ownerPhone: '0952393934',
+      img: 'https://images.unsplash.com/photo-1655107614517-dc106f8cf1a5?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+    },
+    {
+      id: 3,
+      position: [16.03, 109.3],
+      shipNum: 'Qng 834934VN',
+      shipName: 'Already Two',
+      shipLength: 15,
+      power: '320CV',
+      ownerPhone: '0952393934',
+      img: 'https://plus.unsplash.com/premium_photo-1663050763676-82ff02c5e02c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+    },
+    {
+      id: 4,
+      position: [13.03, 111.3],
+      shipNum: 'Qng 2334934VN',
+      shipName: 'Already Two',
+      shipLength: 15,
+      power: '320CV',
+      ownerPhone: '0952393934',
+      img: 'https://plus.unsplash.com/premium_photo-1663050763676-82ff02c5e02c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+    },
+    {
+      id: 5,
+      position: [8.1789, 105.0139],
+      shipNum: 'Qng 834934VN',
+      shipName: 'Already Two',
+      shipLength: 15,
+      power: '320CV',
+      ownerPhone: '0952393934',
+      img: 'https://plus.unsplash.com/premium_photo-1663050763676-82ff02c5e02c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+    },
+    {
+      id: 6,
+      position: [16.03, 108.5],
+      shipNum: 'Qng 834934VN',
+      shipName: 'Already Two',
       shipLength: 15,
       power: '320CV',
       ownerPhone: '0952393934',
@@ -50,7 +90,7 @@ function App() {
   const ship = [
     {
       id: 1,
-      shipNum: 'Qng 834934VN',
+      shipNum: 'Qng 834956VN',
       shipName: 'Navy Star',
       shipLength: 15,
       power: '320CV',
@@ -68,12 +108,30 @@ function App() {
     },
     {
       id: 3,
-      shipNum: 'Nng 834934VE',
+      shipNum: 'Vng 834934VE',
       shipLength: 17,
-      shipName: 'Hard Waves',
+      shipName: 'SkyTea',
       power: '560CV',
       ownerPhone: '0952393934',
-      img: 'https://images.unsplash.com/photo-1606185540834-d6e7483ee1a4?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+      img: 'https://images.unsplash.com/photo-1589420241438-38271f7d3cea?q=80&w=1946&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+    },
+    {
+      id: 4,
+      shipNum: 'Hng 434434VE',
+      shipLength: 17,
+      shipName: 'Syea',
+      power: '560CV',
+      ownerPhone: '0952393934',
+      img: 'https://plus.unsplash.com/premium_photo-1663011524822-e32fc07f7105?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+    },
+    {
+      id: 5,
+      shipNum: 'Hng 534434VE',
+      shipLength: 17,
+      shipName: 'Js Syea',
+      power: '560CV',
+      ownerPhone: '0952393934',
+      img: 'https://plus.unsplash.com/premium_photo-1663040158145-54aaca9c0d3e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     }
 
   ]
@@ -103,9 +161,9 @@ function App() {
 
   const handleNearbyShips = (currentMarker) => {
     const nearbyMarkers = markers.filter(marker => {
-      // Exclude the current marker by checking if it has the same id
+
       if (marker.id === currentMarker.id) {
-        return false; // Skip this marker
+        return false;
       }
       const [lat1, lon1] = currentMarker.position;
       const [lat2, lon2] = marker.position;
@@ -113,7 +171,7 @@ function App() {
       return distance <= 100000; // 100km in meters
     });
     console.log('Nearby markers:', nearbyMarkers);
-    // Implement your logic to display nearby markers
+
   };
 
 
@@ -170,48 +228,48 @@ function App() {
           ))}
           {/* <Polygon positions={polygon} pathOptions={{ fillColor: 'transparent' }} /> */}
 
-          {/* <MarkerClusterGroup> */}
-          {markers.map(marker => (
-            <Marker key={marker.id} position={marker.position} icon={customIcon}>
-              <Popup>
-                <div className="popUpContainer">
-                  <div className='shipImg'>
-                    <img src={marker.img} alt="Ship" />
+          <MarkerClusterGroup>
+            {markers.map(marker => (
+              <Marker key={marker.id} position={marker.position} icon={customIcon}>
+                <Popup>
+                  <div className="popUpContainer">
+                    <div className='shipImg'>
+                      <img src={marker.img} alt="Ship" />
+                    </div>
+                    <div className='shipInfo'>
+                      <div className='nameNum'>
+                        <span>{`${marker.shipName} - ${marker.shipNum}`}</span>
+                        {/* <span>{marker.shipNum}</span> */}
+                      </div>
+                      <div className='position'>
+                        <span><label>Position: </label>{marker.position}</span>
+                      </div>
+                      <div className='lengthPower'>
+                        <span><label>Length: </label>{marker.shipLength}m</span>
+                        <span><label>Power: </label>{marker.power}</span>
+                      </div>
+                      <div className='ownerNote'>
+                        <span><label>OwnerPhone: </label>{marker.ownerPhone}</span>
+                        <span>{marker.note}</span>
+                      </div>
+                    </div>
+
+
+
                   </div>
-                  <div className='shipInfo'>
-                    <div className='nameNum'>
-                      <span>{`${marker.shipName} - ${marker.shipNum}`}</span>
-                      {/* <span>{marker.shipNum}</span> */}
-                    </div>
-                    <div className='position'>
-                      <span><label>Position: </label>{marker.position}</span>
-                    </div>
-                    <div className='lengthPower'>
-                      <span><label>Length: </label>{marker.shipLength}m</span>
-                      <span><label>Power: </label>{marker.power}</span>
-                    </div>
-                    <div className='ownerNote'>
-                      <span><label>OwnerPhone: </label>{marker.ownerPhone}</span>
-                      <span>{marker.note}</span>
-                    </div>
+
+                  <div className='ButtonPart'>
+                    <button className='popupButton nearby' onClick={() => handleNearbyShips(marker)}>NearBy Ships</button>
+                    <button className='popupButton update'>Update</button>
+                    <button className='popupButton delete' onClick={() => handleDeleteMarker(marker.id)}>Delete</button>
                   </div>
+                </Popup>
 
-
-
-                </div>
-
-                <div className='ButtonPart'>
-                  <button className='popupButton nearby' onClick={() => handleNearbyShips(marker)}>NearBy Ships</button>
-                  <button className='popupButton update'>Update</button>
-                  <button className='popupButton delete' onClick={() => handleDeleteMarker(marker.id)}>Delete</button>
-                </div>
-              </Popup>
-
-            </Marker>
-          )
-          )
-          }
-          {/* </MarkerClusterGroup> */}
+              </Marker>
+            )
+            )
+            }
+          </MarkerClusterGroup>
         </MapContainer>
       </div>
       <FormAddBoat />
@@ -227,33 +285,41 @@ function App() {
       shipNum: '',
 
     });
+    const options = ship.map((item) => ({ value: item.shipNum }));
 
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      if (name === "position") {
-        setNewMarker(prevState => ({
-          ...prevState,
-          [name]: value.split(',').map(Number)
-        }));
-      } else {
-        setNewMarker(prevState => ({
-          ...prevState,
-          [name]: value
-        }));
-      }
+    const handlePositionChange = (e) => {
+      const { value } = e.target;
+      // Remove non-numeric characters except commas and periods
+      const cleanedValue = value.replace(/[^0-9.,-]/g, '');
+      setNewMarker(prevState => ({
+        ...prevState,
+        position: cleanedValue
+      }));
+    };
+    const handleShipNumChange = (value) => {
+      setNewMarker(prevState => ({
+        ...prevState,
+        shipNum: value,
+      }));
     };
     const handleSubmit = (e) => {
       e.preventDefault();
 
-      setNewMarker({ position: [], shipNum: '', title: '', description: '' });
+      // Clear the form fields
+      setNewMarker({ position: '', shipNum: '' });
+
+      // Split and map the cleaned position value to numbers
+      const enteredPosition = newMarker.position.split(',').map(Number);
+
+      // Find the ship with the entered ship number
       const enteredShipNum = newMarker.shipNum;
       const foundShip = ship.find(ship => ship.shipNum === enteredShipNum);
 
-      // If ship is found, create a new marker object combining ship information and position
       if (foundShip) {
+        // If ship is found, add it as a new marker
         const newMarkerWithShip = {
           id: markers.length + 1,
-          position: newMarker.position,
+          position: enteredPosition,
           shipLength: foundShip.shipLength,
           power: foundShip.power,
           ownerPhone: foundShip.ownerPhone,
@@ -261,21 +327,13 @@ function App() {
           shipNum: newMarker.shipNum,
           shipName: foundShip.shipName
         };
-
-        // Add the new marker to the markers array
         setMarkers(prevMarkers => [...prevMarkers, newMarkerWithShip]);
-
-        // Clear the form fields
-        setNewMarker({ position: [], shipNum: '' });
       } else {
-        // Handle case where ship with entered ship number is not found
-        const id = markers.length + 1;
-        const note = `This ${newMarker.shipNum} ship was not exist in our system`
-        setMarkers(prevMarkers => [...prevMarkers, { ...newMarker, id, note }]);
+        // If ship is not found, handle it accordingly (e.g., show an error message)
         console.log('Ship not found!');
       }
-      console.log(markers)
     };
+
     const toggleForm = () => {
       setIsFormVisible(prevState => !prevState);
     };
@@ -285,27 +343,37 @@ function App() {
         {isFormVisible && (
           <div className='formAddBoat'>
             <form onSubmit={handleSubmit} className='formtotal'>
+              <h2>Add Ship Location</h2>
               <label className='formfield'>
                 Position
-                <input
+                <Input
+                  style={{ width: '170px' }}
                   type="text"
                   name="position"
                   value={newMarker.position}
-                  onChange={handleInputChange}
-                />
-                {console.log(newMarker.position)}
-              </label>
-              <label className='formfield'>
-                ShipNum
-                <input
-                  type="text"
-                  name="shipNum"
-                  value={newMarker.shipNum}
-                  onChange={handleInputChange}
+                  onChange={handlePositionChange}
                 />
               </label>
 
-              <button className='addboatbutton' type="submit">Add Marker</button>
+              <label className='formfield'>
+                ShipNum
+                <AutoComplete
+                  style={{ width: '170px' }}
+
+                  popupClassName={'suggest'}
+                  options={options}
+                  // placeholder="Select ShipNum"
+                  filterOption={(inputValue, option) => {
+                    if (option) { // Check if option is not null or undefined
+                      return option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;
+                    }
+                    return false;
+                  }}
+                  onChange={handleShipNumChange}
+                />
+              </label>
+
+              <button className='addboatbutton' type="submit">Add Location</button>
             </form>
           </div>
         )}
